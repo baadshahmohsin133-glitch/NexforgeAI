@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="theme-color" content="#090909" />
+<title>NexForge AI — Your imagination. Built in 3D.</title>
+<style>
+:root{--bg:#080808;--panel:#111;--panel2:#171717;--line:#292929;--text:#f4f4f4;--muted:#999;--white:#fff;--good:#b8f5c6;--warn:#f3d18a}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:var(--bg);color:var(--text);font:14px/1.45 Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+button,input,textarea,select{font:inherit}button{cursor:pointer}
+.app{min-height:100vh;display:grid;grid-template-columns:240px minmax(0,1fr)}
+.sidebar{border-right:1px solid var(--line);padding:22px 14px;background:#0b0b0b;display:flex;flex-direction:column;gap:24px}
+.brand{display:flex;align-items:center;gap:10px;padding:0 8px}.logo{width:34px;height:34px;border:1px solid #777;border-radius:10px;display:grid;place-items:center;font-weight:900;font-size:18px;background:linear-gradient(145deg,#242424,#050505)}.brand-name{font-weight:800;letter-spacing:.11em;font-size:13px}.brand-sub{font-size:10px;color:#aaa;letter-spacing:.15em}
+.nav-title{font-size:10px;color:#666;letter-spacing:.16em;padding:0 10px 7px;text-transform:uppercase}.nav{display:grid;gap:5px}.nav button{display:flex;align-items:center;gap:10px;border:1px solid transparent;background:transparent;color:#aaa;text-align:left;padding:11px 10px;border-radius:10px}.nav button.active,.nav button:hover{background:#1b1b1b;color:white;border-color:#303030}.nav .ico{width:18px;text-align:center;color:#ddd}.sidebar-bottom{margin-top:auto;border:1px solid var(--line);border-radius:12px;padding:12px;color:#999;font-size:12px}.founder{color:#eee;font-weight:600;margin-top:5px}
+main{min-width:0}.topbar{height:66px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 26px;gap:12px}.crumb{color:#888;font-size:12px}.top-actions{display:flex;gap:8px;align-items:center}.pill{border:1px solid #333;background:#121212;color:#bbb;border-radius:999px;padding:7px 11px;font-size:11px}.avatar{width:31px;height:31px;border-radius:50%;background:#eee;color:#111;display:grid;place-items:center;font-weight:800}
+.content{padding:26px;max-width:1500px;margin:auto}.welcome{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;margin-bottom:22px}.eyebrow{color:#aaa;font-size:10px;letter-spacing:.2em;text-transform:uppercase}.welcome h1{font-size:clamp(25px,3vw,38px);letter-spacing:-.045em;margin:8px 0}.welcome p{color:#999;margin:0;max-width:650px}.outline-btn,.solid-btn{border:1px solid #3a3a3a;border-radius:10px;padding:10px 13px;background:#111;color:#eee;white-space:nowrap}.solid-btn{background:#f5f5f5;color:#111;border-color:#fff;font-weight:750}.solid-btn:disabled{opacity:.45;cursor:not-allowed}
+.notice{border:1px solid #4b3b1b;background:#17130b;color:#e5d4ad;padding:12px 14px;border-radius:10px;margin:18px 0;font-size:12px}.notice strong{color:#fff1cc}
+.workspace{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(280px,.75fr);gap:16px;align-items:stretch}.panel{border:1px solid var(--line);background:var(--panel);border-radius:15px;overflow:hidden;min-width:0}.panel-head{height:53px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 15px;gap:10px}.panel-title{font-size:12px;font-weight:750;letter-spacing:.02em}.small-muted{font-size:11px;color:#777}.viewer-wrap{position:relative;background:radial-gradient(ellipse at 50% 38%,#242424 0,#101010 45%,#090909 100%);height:420px;min-height:320px}.viewer-wrap canvas{display:block;width:100%;height:100%;outline:none}.view-chip{position:absolute;top:12px;left:12px;border:1px solid #383838;background:#0c0c0ccc;border-radius:7px;padding:6px 8px;font-size:10px;color:#bbb;pointer-events:none}.viewer-tools{position:absolute;right:12px;top:12px;display:flex;gap:5px}.icon-btn{border:1px solid #383838;background:#111d;color:#ddd;border-radius:8px;padding:7px 9px;font-size:11px}.viewer-footer{display:flex;justify-content:space-between;gap:8px;padding:12px 14px;border-top:1px solid var(--line);color:#888;font-size:11px;flex-wrap:wrap}
+.inspector{display:flex;flex-direction:column}.inspector-body{padding:15px;display:grid;gap:16px}.field-label{font-size:11px;color:#aaa;display:block;margin-bottom:7px}.prompt{width:100%;resize:vertical;min-height:106px;border:1px solid #333;background:#090909;color:#eee;border-radius:10px;padding:12px;outline:none}.prompt:focus,input:focus,select:focus{border-color:#777}.field-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}.select,.text-input{width:100%;border:1px solid #333;background:#090909;color:#eee;border-radius:9px;padding:10px;outline:none}.helper{font-size:10px;color:#777;margin-top:6px}.full{width:100%}.status{border:1px solid #303030;background:#0c0c0c;padding:11px;border-radius:10px;font-size:11px;color:#999}.status strong{display:block;color:#ddd;margin-bottom:4px}.status.ok{border-color:#24462e}.status.ok strong{color:var(--good)}.status.warn{border-color:#4b3b1b}.status.warn strong{color:var(--warn)}
+.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:0 14px 14px}.metric{background:#0b0b0b;border:1px solid #292929;border-radius:9px;padding:10px}.metric span{display:block;color:#777;font-size:10px}.metric strong{display:block;font-size:15px;margin-top:4px}
+.lower{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px}.list{padding:8px 14px 14px}.asset-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid #242424}.asset-row:last-child{border-bottom:0}.asset-icon{width:34px;height:34px;background:#202020;border:1px solid #333;border-radius:8px;display:grid;place-items:center}.asset-name{font-size:12px;font-weight:650}.asset-meta{font-size:10px;color:#777;margin-top:3px}.asset-row .outline-btn{margin-left:auto;font-size:10px;padding:6px 8px}
+.empty{padding:22px 14px;color:#777;font-size:12px;text-align:center}.footer-note{color:#666;font-size:10px;margin-top:18px;text-align:center}
+.toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:#eee;color:#111;padding:11px 16px;border-radius:10px;box-shadow:0 10px 35px #0008;z-index:50;max-width:90vw;font-size:12px}
+.mobile-menu{display:none}
+@media(max-width:900px){.app{grid-template-columns:1fr}.sidebar{display:none}.topbar{padding:0 15px;height:58px}.content{padding:17px 13px}.workspace{grid-template-columns:1fr}.viewer-wrap{height:360px}.welcome{display:block}.welcome .outline-btn{margin-top:14px}.lower{grid-template-columns:1fr}.mobile-menu{display:inline-block}.top-actions .pill{display:none}}
+@media(max-width:420px){.viewer-wrap{height:310px}.field-row{grid-template-columns:1fr}.content{padding:14px 10px}.welcome h1{font-size:27px}.panel-head{padding:0 11px}.metrics{padding:0 10px 10px}.metric{padding:8px}.metric strong{font-size:13px}}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand"><div class="logo">N</div><div><div class="brand-name">NEXFORGE AI</div><div class="brand-sub">3D CREATION ENGINE</div></div></div>
+    <div><div class="nav-title">Workspace</div><nav class="nav" id="nav">
+      <button class="active" data-page="Create 3D"><span class="ico">◈</span>Create 3D</button>
+      <button data-page="Idea to Game"><span class="ico">⌘</span>Idea to Game</button>
+      <button data-page="Roblox Creator"><span class="ico">▧</span>Roblox Creator</button>
+      <button data-page="Clothing Studio"><span class="ico">▤</span>Clothing Studio</button>
+      <button data-page="Character Studio"><span class="ico">♙</span>Character Studio</button>
+      <button data-page="Animation Studio"><span class="ico">◷</span>Animation Studio</button>
+      <button data-page="World Generator"><span class="ico">⌖</span>World Generator</button>
+      <button data-page="Performance Coach"><span class="ico">⌁</span>Performance Coach</button>
+    </nav></div>
+    <div><div class="nav-title">Library</div><nav class="nav">
+      <button data-page="My Projects"><span class="ico">▦</span>My Projects</button>
+      <button data-page="Integrations"><span class="ico">⇄</span>Integrations</button>
+      <button data-page="Settings"><span class="ico">⚙</span>Settings</button>
+    </nav></div>
+    <div class="sidebar-bottom">FOUNDER<div class="founder">Mohsin Baadshah</div><div style="margin-top:8px">Prototype · Phase 1</div></div>
+  </aside>
+  <main>
+    <header class="topbar">
+      <div style="display:flex;align-items:center;gap:10px"><button class="icon-btn mobile-menu" id="menuBtn">☰</button><div class="crumb">Workspace / <span id="crumbCurrent" style="color:#eee">Create 3D</span></div></div>
+      <div class="top-actions"><span class="pill">● LOCAL PROTOTYPE</span><span class="pill">Free build · No AI credits</span><div class="avatar">N</div></div>
+    </header>
+    <div class="content">
+      <section class="welcome"><div><div class="eyebrow">Your creative workspace</div><h1 id="pageHeading">Turn your ideas into 3D.</h1><p id="pageSub">Describe an asset, inspect the 3D workspace, and build your project one step at a time.</p></div><button class="outline-btn" id="newProject">＋ New project</button></section>
+      <div class="notice"><strong>Honest prototype status:</strong> this first version has a real interactive 3D viewer and local project saving. The “Create preview” button builds a procedural preview, not an AI-generated final asset. Cloud accounts, AI model APIs, Blender transfer, and Roblox Studio transfer are not connected yet.</div>
+      <section class="workspace">
+        <div class="panel">
+          <div class="panel-head"><span class="panel-title">3D VIEWPORT</span><span class="small-muted" id="sceneLabel">Untitled scene</span></div>
+          <div class="viewer-wrap" id="viewer"><div class="view-chip">LIVE VIEWPORT · DRAG TO ORBIT</div><div class="viewer-tools"><button class="icon-btn" id="gridBtn">Grid ✓</button><button class="icon-btn" id="resetView">Reset view</button></div></div>
+          <div class="viewer-footer"><span id="objectLabel">Scene ready</span><span>Orbit · Pan · Zoom</span><span id="savedLabel">Not saved</span></div>
+          <div class="metrics"><div class="metric"><span>OBJECTS</span><strong id="metricObjects">0</strong></div><div class="metric"><span>TRIANGLES*</span><strong id="metricTris">—</strong></div><div class="metric"><span>SCENE MODE</span><strong id="metricMode">Preview</strong></div></div>
+        </div>
+        <div class="panel inspector">
+          <div class="panel-head"><span class="panel-title">DESCRIBE TO 3D</span><span class="small-muted">01 / CREATE</span></div>
+          <div class="inspector-body">
+            <div><label class="field-label" for="prompt">What do you want to create?</label><textarea id="prompt" class="prompt" placeholder="Example: A futuristic black katana with a silver blade and blue energy details..."></textarea><div class="helper">Describe shape, materials, style and intended use.</div></div>
+            <div class="field-row"><div><label class="field-label" for="category">Asset type</label><select class="select" id="category"><option>Weapon</option><option>Prop</option><option>Building</option><option>Character concept</option><option>Environment</option><option>Vehicle</option><option>Clothing concept</option></select></div><div><label class="field-label" for="style">Visual style</label><select class="select" id="style"><option>Stylised</option><option>Low-poly</option><option>Anime</option><option>Voxel</option><option>Realistic</option><option>Futuristic</option></select></div></div>
+            <div class="field-row"><div><label class="field-label" for="target">Target platform</label><select class="select" id="target"><option>General 3D</option><option>Roblox</option><option>Blender</option><option>Unity</option><option>Unreal Engine</option></select></div><div><label class="field-label" for="detail">Detail level</label><select class="select" id="detail"><option>Balanced</option><option>Low poly</option><option>High detail</option></select></div></div>
+            <button class="solid-btn full" id="createBtn">✦ Create procedural preview</button>
+            <button class="outline-btn full" id="saveBtn">Save project on this device</button>
+            <button class="outline-btn full" id="exportBtn">Export scene as GLB</button>
+            <div class="status warn" id="status"><strong>Ready for your prompt</strong>Enter a description, then create a preview. This prototype works without an AI key.</div>
+          </div>
+        </div>
+      </section>
+      <section class="lower">
+        <div class="panel"><div class="panel-head"><span class="panel-title">PROJECT BRAIN</span><span class="small-muted">LOCAL NOTES</span></div><div class="list"><div class="asset-row"><div class="asset-icon">◉</div><div><div class="asset-name">Current design brief</div><div class="asset-meta" id="briefText">No design brief yet.</div></div></div><div class="asset-row"><div class="asset-icon">⌘</div><div><div class="asset-name">Target platform</div><div class="asset-meta" id="brainTarget">General 3D</div></div></div><div class="asset-row"><div class="asset-icon">◇</div><div><div class="asset-name">Generation provider</div><div class="asset-meta">Not connected — no fake AI results</div></div></div></div></div>
+        <div class="panel"><div class="panel-head"><span class="panel-title">RECENT PROJECTS</span><button class="icon-btn" id="loadBtn">Open saved</button></div><div class="list" id="projectList"><div class="empty">Your locally saved projects will appear here.</div></div></div>
+      </section>
+      <div class="footer-note">NEXFORGE AI · Your imagination. Built in 3D. · Prototype build 0.1 · *Triangle count is estimated for the current procedural preview.</div>
+    </div>
+  </main>
+</div>
+<div id="toast" class="toast" hidden></div>
+<script type="module">
+import * as THREE from 'https://unpkg.com/three@0.166.1/build/three.module.js';
+import { OrbitControls } from 'https://unpkg.com/three@0.166.1/examples/jsm/controls/OrbitControls.js';
+import { GLTFExporter } from 'https://unpkg.com/three@0.166.1/examples/jsm/exporters/GLTFExporter.js';
+
+const $=id=>document.getElementById(id);
+const viewer=$('viewer');
+const scene=new THREE.Scene(); scene.background=new THREE.Color('#101010');
+const camera=new THREE.PerspectiveCamera(45,1,.1,1000); camera.position.set(5,4,7);
+const renderer=new THREE.WebGLRenderer({antialias:true,alpha:false}); renderer.setPixelRatio(Math.min(devicePixelRatio,2)); renderer.outputColorSpace=THREE.SRGBColorSpace; renderer.toneMapping=THREE.ACESFilmicToneMapping; renderer.toneMappingExposure=1.1;
+renderer.domElement.setAttribute('aria-label','Interactive 3D preview'); viewer.appendChild(renderer.domElement);
+const controls=new OrbitControls(camera,renderer.domElement); controls.enableDamping=true; controls.target.set(0,1,0);
+scene.add(new THREE.HemisphereLight(0xffffff,0x303030,2));
+const key=new THREE.DirectionalLight(0xffffff,3); key.position.set(4,8,5); scene.add(key);
+const rim=new THREE.DirectionalLight(0x8eb7ff,1.6); rim.position.set(-5,3,-4); scene.add(rim);
+const grid=new THREE.GridHelper(12,24,0x555555,0x292929); grid.position.y=-.015; scene.add(grid);
+const axes=new THREE.AxesHelper(2.3); axes.position.set(-4,0,-4); scene.add(axes);
+const modelRoot=new THREE.Group(); modelRoot.name='NexForgePreview'; scene.add(modelRoot);
+let projectName='Untitled scene', savedProjects=[], currentDescription='', isGrid=true;
+const materials={
+ dark:new THREE.MeshStandardMaterial({color:'#202020',metalness:.55,roughness:.35}),
+ silver:new THREE.MeshStandardMaterial({color:'#bfc4ca',metalness:.8,roughness:.22}),
+ blue:new THREE.MeshStandardMaterial({color:'#278cff',metalness:.4,roughness:.22,emissive:'#063d87',emissiveIntensity:.8}),
+ gold:new THREE.MeshStandardMaterial({color:'#c99b48',metalness:.75,roughness:.24}),
+ stone:new THREE.MeshStandardMaterial({color:'#656565',roughness:.85}),
+ cloth:new THREE.MeshStandardMaterial({color:'#101014',roughness:.9}),
+ green:new THREE.MeshStandardMaterial({color:'#344b39',roughness:.95})
+};
+function clearModel(){while(modelRoot.children.length){const o=modelRoot.children[0];modelRoot.remove(o);o.traverse?.(n=>{if(n.geometry)n.geometry.dispose()})}}
+function addMesh(geometry,material,name,pos=[0,0,0],rot=[0,0,0],scale=[1,1,1]){const m=new THREE.Mesh(geometry,material);m.name=name;m.position.set(...pos);m.rotation.set(...rot);m.scale.set(...scale);m.castShadow=true;m.receiveShadow=true;modelRoot.add(m);return m}
+function box(name,mat,pos,scale,rot=[0,0,0]){return addMesh(new THREE.BoxGeometry(1,1,1),mat,name,pos,rot,scale)}
+function cyl(name,mat,pos,r1,r2,h,radial=12,rot=[0,0,0]){return addMesh(new THREE.CylinderGeometry(r1,r2,h,radial),mat,name,pos,rot)}
+function createKatana(desc){
+  box('Handle — dark wrap',materials.dark,[0,1.15,0],[.17,1.15,.17],[0,0,-.45]);
+  cyl('Pommel',materials.gold,[-.25,.62,0],.13,.13,.12,10,[0,0,Math.PI/2]);
+  box('Guard',materials.gold,[.25,1.75,0],[.55,.09,.28],[0,0,-.2]);
+  box('Blade — silver steel',materials.silver,[.4,2.75,0],[.12,2.05,.055],[0,0,-.1]);
+  box('Energy line — blue',materials.blue,[.43,2.77,.034],[.025,1.7,.012],[0,0,-.1]);
+  box('Blade tip',materials.silver,[.49,3.82,0],[.1,.25,.05],[0,0,-.35]);
+}
+function createBuilding(){box('Main structure',materials.stone,[0,1.2,0],[2.2,2.4,1.8]);box('Roof',materials.dark,[0,2.55,0],[2.7,.3,2.2],[0,.785,0]);for(let x of [-.65,.65]){box('Front window',materials.blue,[x,1.5,.92],[.35,.55,.04]);box('Window frame',materials.dark,[x,1.5,.95],[.42,.62,.04])}box('Door',materials.dark,[0,.55,.93],[.5,1.1,.08]);}
+function createVehicle(){box('Car body',materials.blue,[0,.8,0],[2.5,.55,1.2]);box('Cabin',materials.dark,[-.15,1.25,0],[1.25,.55,1]);for(let x of [-.8,.8])for(let z of [-.67,.67])cyl('Wheel',materials.dark,[x,.42,z],.32,.32,.18,16,[Math.PI/2,0,0]);}
+function createCharacter(){cyl('Body',materials.cloth,[0,1.25,0],.35,.42,.9,12);cyl('Head',materials.stone,[0,2,0],.3,.3,.45,12);box('Visor',materials.blue,[0,2.05,.27],[.35,.12,.06]);for(let x of [-.5,.5]){box('Arm',materials.dark,[x,1.35,0],[.2,.8,.2],[0,0,x<0?-.15:.15]);box('Leg',materials.dark,[x*.45,.45,0],[.24,.75,.24]);}}
+function createEnvironment(){box('Ground',materials.green,[0,-.15,0],[7,.25,7]);for(let i=0;i<9;i++){const x=(i%3-1)*2,z=(Math.floor(i/3)-1)*2;box('Low-poly tree trunk',materials.dark,[x,.45,z],[.22,.9,.22]);cyl('Tree canopy',materials.green,[x,1.35,z],.05,.75,1.3,5);}}
+function createProp(){box('Main body',materials.dark,[0,1,0],[1.2,1.2,1]);box('Metal detail',materials.silver,[0,1.05,.53],[.8,.65,.05]);cyl('Top detail',materials.gold,[0,1.7,0],.24,.24,.22,10);}
+function buildPreview(){
+ const p=$('prompt').value.trim(); if(!p){setStatus('Add a description first','Write what you want to create, then tap Create procedural preview.','warn');$('prompt').focus();return}
+ currentDescription=p; clearModel(); const cat=$('category').value.toLowerCase();
+ if(cat.includes('weapon'))createKatana(p);else if(cat.includes('building'))createBuilding();else if(cat.includes('vehicle'))createVehicle();else if(cat.includes('character'))createCharacter();else if(cat.includes('environment'))createEnvironment();else createProp();
+ // The prompt affects the label and project context; geometry is a category-based procedural placeholder, not AI interpretation.
+ projectName=p.length>34?p.slice(0,34)+'…':p; $('sceneLabel').textContent=projectName;
+ $('objectLabel').textContent=`${modelRoot.children.length} procedural objects`; $('metricObjects').textContent=modelRoot.children.length;
+ let tri=0;modelRoot.traverse(o=>{if(o.isMesh){const g=o.geometry;tri+=g.index?g.index.count/3:(g.attributes.position.count/3)}});$('metricTris').textContent=Math.round(tri).toLocaleString();
+ $('metricMode').textContent='Procedural';$('briefText').textContent=p.length>72?p.slice(0,72)+'…':p;$('brainTarget').textContent=$('target').value;
+ setStatus('Preview created — not AI generated','This is editable procedural geometry. A real text-to-3D provider must be connected for faithful prompt-based models.','ok');toast('Procedural preview created.');
+}
+function setStatus(title,msg,type=''){const el=$('status');el.className='status '+type;el.innerHTML='<strong></strong><span></span>';el.querySelector('strong').textContent=title;el.querySelector('span').textContent=msg}
+function toast(msg){const t=$('toast');t.textContent=msg;t.hidden=false;clearTimeout(toast.timer);toast.timer=setTimeout(()=>t.hidden=true,2600)}
+function resize(){const w=viewer.clientWidth,h=viewer.clientHeight;renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix()}
+new ResizeObserver(resize).observe(viewer);resize();
+function animate(){requestAnimationFrame(animate);controls.update();renderer.render(scene,camera)}animate();
+$('createBtn').addEventListener('click',buildPreview);
+$('gridBtn').addEventListener('click',()=>{isGrid=!isGrid;grid.visible=isGrid;axes.visible=isGrid;$('gridBtn').textContent=isGrid?'Grid ✓':'Grid —'});
+$('resetView').addEventListener('click',()=>{camera.position.set(5,4,7);controls.target.set(0,1,0);controls.update()});
+$('target').addEventListener('change',()=>{$('brainTarget').textContent=$('target').value});
+$('newProject').addEventListener('click',()=>{clearModel();$('prompt').value='';projectName='Untitled scene';$('sceneLabel').textContent=projectName;$('objectLabel').textContent='Scene ready';$('metricObjects').textContent='0';$('metricTris').textContent='—';$('metricMode').textContent='Preview';currentDescription='';setStatus('New project ready','Describe an asset to create a procedural preview.');toast('New project started.')});
+function snapshot(){return {name:projectName,description:$('prompt').value,category:$('category').value,style:$('style').value,target:$('target').value,detail:$('detail').value,createdAt:new Date().toISOString()}}
+function renderProjects(){const list=$('projectList');if(!savedProjects.length){list.innerHTML='<div class="empty">No saved projects on this device yet.</div>';return}list.innerHTML='';savedProjects.slice().reverse().forEach((p,i)=>{const row=document.createElement('div');row.className='asset-row';const icon=document.createElement('div');icon.className='asset-icon';icon.textContent='◇';const wrap=document.createElement('div');const title=document.createElement('div');title.className='asset-name';title.textContent=p.name||'Untitled scene';const meta=document.createElement('div');meta.className='asset-meta';meta.textContent=(p.target||'General 3D')+' · '+new Date(p.createdAt).toLocaleDateString();wrap.append(title,meta);const btn=document.createElement('button');btn.className='outline-btn';btn.textContent='Load';btn.onclick=()=>loadProject(p);row.append(icon,wrap,btn);list.append(row)})}
+function saveProject(){const p=snapshot();const existing=savedProjects.findIndex(x=>x.name===p.name);if(existing>=0)savedProjects[existing]=p;else savedProjects.push(p);try{localStorage.setItem('nexforge-projects-v1',JSON.stringify(savedProjects));$('savedLabel').textContent='Saved on device';renderProjects();setStatus('Project saved locally','Saved to this browser on this device. This is not cloud backup.','ok');toast('Project saved on this device.')}catch(e){setStatus('Could not save','Browser storage may be full or disabled.','warn')}}
+function loadProject(p){$('prompt').value=p.description||'';$('category').value=p.category||'Prop';$('style').value=p.style||'Stylised';$('target').value=p.target||'General 3D';$('detail').value=p.detail||'Balanced';projectName=p.name||'Untitled scene';$('sceneLabel').textContent=projectName;$('brainTarget').textContent=$('target').value;if($('prompt').value)buildPreview();toast('Project details loaded.')}
+$('saveBtn').addEventListener('click',saveProject);
+$('loadBtn').addEventListener('click',()=>{try{savedProjects=JSON.parse(localStorage.getItem('nexforge-projects-v1')||'[]');renderProjects();if(savedProjects.length)toast('Saved projects loaded.');else toast('No saved projects found.')}catch(e){toast('Could not read saved projects.')}});
+try{savedProjects=JSON.parse(localStorage.getItem('nexforge-projects-v1')||'[]');renderProjects()}catch(e){}
+$('exportBtn').addEventListener('click',async()=>{if(!modelRoot.children.length){toast('Create a preview first.');return}try{const exporter=new GLTFExporter();const result=await exporter.parseAsync(modelRoot,{binary:true});const blob=new Blob([result],{type:'model/gltf-binary'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='nexforge-preview.glb';a.click();URL.revokeObjectURL(url);toast('GLB export downloaded.')}catch(e){console.error(e);toast('Export failed in this browser.')}});
+const pages={'Create 3D':['Turn your ideas into 3D.','Describe an asset, inspect the 3D workspace, and build your project one step at a time.'],'Idea to Game':['Turn a game idea into a plan.','Break a game concept into assets, systems, milestones and a build checklist.'],'Roblox Creator':['Prepare assets for Roblox.','Plan compatible models and review platform requirements before transfer.'],'Clothing Studio':['Design your next outfit.','Create clothing concepts and organise references for Roblox clothing workflows.'],'Character Studio':['Shape your next character.','Organise character concepts, target rigs and visual directions.'],'Animation Studio':['Bring motion into the pipeline.','Plan animation requirements and validate rig compatibility.'],'World Generator':['Build a world, piece by piece.','Plan environments and modular scene components.'],'Performance Coach':['Inspect your asset pipeline.','Review measurable geometry and file details before targeting a game platform.'],'My Projects':['Your projects, in one place.','Saved prototype project details are stored locally in this browser.'],'Integrations':['Connect your creative tools.','Blender and Roblox Studio integrations are not connected in this prototype.'],'Settings':['Workspace settings.','Manage prototype preferences and local project data.']};
+document.querySelectorAll('[data-page]').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('[data-page]').forEach(b=>b.classList.remove('active'));btn.classList.add('active');const p=btn.dataset.page;$('crumbCurrent').textContent=p;$('pageHeading').textContent=pages[p]?.[0]||p;$('pageSub').textContent=pages[p]?.[1]||'This workspace will be implemented in a later phase.';if(p!=='Create 3D')toast(p+' section preview — advanced workflows are not connected yet.');}));
+$('menuBtn').addEventListener('click',()=>toast('Use the Create 3D workspace navigation from a wider screen for now.'));
+</script>
+</body>
+</html>
